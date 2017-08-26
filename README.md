@@ -17,9 +17,12 @@ export REACT_APP_USERS_SERVICE_URL=http://192.168.99.100:5001
 Use docker compose to create the multi-container applications. Setting are in docker-compose.yml and services individual Dockerfile.
 
 Build or rebuild containers: ```docker-compose up -d --build```
+
 Run commands (like test): ```docker-compose run users-service python manage.py test```
 
 ## Docker Machine
 Assuming my machine's name is 'dev'
+
 Get the env: ```docker-machine env dev```
+
 Get the ip address: ```docker-machine ip dev```
