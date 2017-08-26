@@ -21,8 +21,24 @@ services:
       - APP_SETTINGS=project.config.DevelopmentConfig
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
+      - SECRET_KEY=testing_key
     depends_on:
       users-db:
         condition: service_healthy
     links:
       - users-db
+
+  web-service:
+    container_name: web-service
+    build: 
+      context: https://github.com/neilb14/flask-microservices-client.git
+      args:
+        - NODE_ENV=development
+        - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+    ports:
+      - '3001:3000' # expose ports - HOST:CONTAINER
+    depends_on:
+      users-service:
+        condition: service_started
+    links:
+      - users-service
