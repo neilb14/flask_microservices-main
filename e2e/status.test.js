@@ -30,8 +30,7 @@ test(`should display user info when user is logged in`, async(t) => {
         .click(Selector('input[type="submit"]'));
     
     await t
-        .expect(Selector('H1').withText('All Users').exists).ok()
-        .click(Selector('a').withText('User Status'))
+        .navigateTo(`${TEST_URL}/status`)
         .expect(Selector('li > strong').withText('User Id:').exists).ok()
         .expect(Selector('li > strong').withText('Username:').exists).ok()
         .expect(Selector('li').withText(username).exists).ok()
