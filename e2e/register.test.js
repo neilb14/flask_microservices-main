@@ -12,6 +12,7 @@ test(`should display the registration form`, async(t) => {
         .navigateTo(`${TEST_URL}/register`)
         .expect(Selector('H1').withText('Register').exists).ok()
         .expect(Selector('form').exists).ok()
+        .expect(Selector('input[disabled]').exists).ok()
 });
 
 test(`should allow a user to register`, async(t)=>{
