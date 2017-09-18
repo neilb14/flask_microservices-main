@@ -13,6 +13,9 @@ test(`should display the sign-in form`, async(t)=>{
         .navigateTo(`${TEST_URL}/login`)
         .expect(Selector('H1').withText('Login').exists).ok()
         .expect(Selector('form').exists).ok()
+        .expect(Selector('input[disabled]').exists).ok()
+        .expect(Selector('.validation-list').exists).ok()
+        .expect(Selector('.validation-list > .error').nth(0).withText('Email must be greater than 5 characters.').exists).ok()
 });
 
 test(`should allow a user to log in`, async(t)=>{
