@@ -4,6 +4,7 @@ const TEST_URL = process.env.TEST_URL;
 const randomstring = require('randomstring');
 const username = randomstring.generate();
 const email = `${username}@test.com`;
+const password = 'longerthanten';
 
 fixture('/register').page(`${TEST_URL}/register`);
 
@@ -22,7 +23,7 @@ test(`should allow a user to register`, async(t)=>{
         .navigateTo(`${TEST_URL}/register`)
         .typeText('input[name="username"]', username)
         .typeText('input[name="email"]', email)
-        .typeText('input[name="password"]', 'password123')
+        .typeText('input[name="password"]', password)
         .click(Selector('input[type="submit"]'))
 
     const tableRow = Selector('td').withText(username).parent();

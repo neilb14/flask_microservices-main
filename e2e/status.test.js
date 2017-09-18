@@ -4,6 +4,7 @@ const randomstring = require('randomstring');
 
 const username = randomstring.generate();
 const email = `${username}@test.com`;
+const password = 'longerthanten';
 const currentDate = new Date();
 const TEST_URL = process.env.TEST_URL;
 
@@ -26,7 +27,7 @@ test(`should display user info when user is logged in`, async(t) => {
         .navigateTo(`${TEST_URL}/register`)
         .typeText('input[name="username"]', username)
         .typeText('input[name="email"]', email)
-        .typeText('input[name="password"]', 'password123')
+        .typeText('input[name="password"]', password)
         .click(Selector('input[type="submit"]'));
     
     await t

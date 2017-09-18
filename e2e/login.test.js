@@ -4,6 +4,7 @@ const randomstring = require('randomstring');
 
 var username = randomstring.generate();
 var email = `${username}@test.com`;
+const password = "longerthanten";
 const TEST_URL = process.env.TEST_URL;
 
 fixture('/login').page(`${TEST_URL}/login`);
@@ -24,7 +25,7 @@ test(`should allow a user to log in`, async(t)=>{
         .navigateTo(`${TEST_URL}/register`)
         .typeText('input[name="username"]', username)
         .typeText('input[name="email"]', email)
-        .typeText('input[name="password"]', 'password123')
+        .typeText('input[name="password"]', password)
         .click(Selector('input[type="submit"]'))
     
     //log user out
@@ -35,7 +36,7 @@ test(`should allow a user to log in`, async(t)=>{
     await t
         .navigateTo(`${TEST_URL}/login`)
         .typeText('input[name="email"]', email)
-        .typeText('input[name="password"]', 'password123')
+        .typeText('input[name="password"]', password)
         .click(Selector('input[type="submit"]'))
 
     const tableRow = Selector('td').withText(username).parent();
@@ -58,7 +59,7 @@ test(`should allow a user to sign in`, async (t) => {
         .navigateTo(`${TEST_URL}/register`)
         .typeText('input[name="username"]', username)
         .typeText('input[name="email"]', email)
-        .typeText('input[name="password"]', 'password123')
+        .typeText('input[name="password"]', password)
         .click(Selector('input[type="submit"]'))
     
       // log a user out
@@ -69,7 +70,7 @@ test(`should allow a user to sign in`, async (t) => {
       await t
         .navigateTo(`${TEST_URL}/login`)
         .typeText('input[name="email"]', email)
-        .typeText('input[name="password"]', 'password123')
+        .typeText('input[name="password"]', password)
         .click(Selector('input[type="submit"]'))
     
       // assert user is redirected to '/'
@@ -96,4 +97,19 @@ test(`should allow a user to sign in`, async (t) => {
         .expect(Selector('a').withText('Register').exists).ok()
         .expect(Selector('a').withText('Log In').exists).ok()
     
+});
+
+test(`should validate password input`, async(t) => {
+    await t
+        .navigateTo(`${TEST_URL}/login`)
+        .expect(Selector('H1').withText('Login').exists).ok()
+        .expect(Selector('form').exists).ok()
+        .expect(Selector('input[disabled]').exists).ok()
+        .expect(Selector('.validation-list > .error').nth(2).withText('Password must be greater than 10 characters.').exists).ok()
+        .typeText('input[name="password"]', password)
+        .expect(Selector('.validation-list').exists).ok()
+        .expect(Selector('.validation-list > .error').nth(2).withText('Password must be greater than 10 characters.').exists).notOk()
+        .expect(Selector('.validation-list > .success').nth(0).withText('Password must be greater than 10 characters.').exists).ok()
+        .click(Selector('a').withText('Register'))
+        .expect(Selector('.validation-list > .error').nth(3).withText('Password must be greater than 10 characters.').exists).ok()
 });
