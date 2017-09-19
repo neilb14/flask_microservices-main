@@ -19,6 +19,17 @@ test(`should display the sign-in form`, async(t)=>{
         .expect(Selector('.validation-list > .error').nth(0).withText('Email must be greater than 5 characters.').exists).ok()
 });
 
+test(`should display the page correctly if a user is not signed in`, async(t) => {
+    await t
+        .navigateTo(TEST_URL)
+        .expect(Selector('H1').withText('All Users').exists).ok()
+        .expect(Selector('a').withText('Log In').exists).ok()
+        .expect(Selector('a').withText('Register').exists).ok()
+        .expect(Selector('a').withText('User Status').exists).notOk()
+        .expect(Selector('a').withText('Log Out').exists).notOk()
+        .expect(Selector('.alert').exists).notOk()
+});
+
 test(`should allow a user to log in`, async(t)=>{
     //register user
     await t
