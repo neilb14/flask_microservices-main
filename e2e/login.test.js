@@ -125,3 +125,37 @@ test(`should validate password input`, async(t) => {
         .click(Selector('a').withText('Register'))
         .expect(Selector('.validation-list > .error').nth(3).withText('Password must be greater than 10 characters.').exists).ok()
 });
+
+test(`should show error if login credentials are incorrect`, async(t) => {
+    await t
+        .navigateTo(`${TEST_URL}/login`)
+        .typeText('input[name="email"]', 'incorrect@email.com')
+        .typeText('input[name="password"]', password)
+        .click(Selector('input[type="submit"]'))
+    
+    await t
+        .expect(Selector('H1').withText('Login').exists).ok()
+        .expect(Selector('a').withText('Log In').exists).ok()
+        .expect(Selector('a').withText('Register').exists).ok()
+        .expect(Selector('a').withText('Log Out').exists).notOk()
+        .expect(Selector('a').withText('User Status').exists).notOk()
+        .expect(Selector('.alert-success').exists).notOk()
+        .expect(Selector('.alert-danger').withText('User does not exist.').exists).ok()
+
+    await t
+        .navigateTo(`${TEST_URL}/login`)
+        .typeText('input[name="email"]', email)
+        .typeText('input[name="password"]', 'badPassword123456')
+        .click(Selector('input[type="submit"]'))
+    
+    await t
+        .expect(Selector('H1').withText('Login').exists).ok()
+        .expect(Selector('a').withText('Log In').exists).ok()
+        .expect(Selector('a').withText('Register').exists).ok()
+        .expect(Selector('a').withText('Log Out').exists).notOk()
+        .expect(Selector('a').withText('User Status').exists).notOk()
+        .expect(Selector('.alert-success').exists).notOk()
+        .expect(Selector('.alert-danger').withText('User does not exist.').exists).ok()
+
+
+});
